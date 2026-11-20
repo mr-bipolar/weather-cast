@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:weather/core/enums/weather_scene_types.dart';
 import 'package:weather/theme/color_palette.dart';
 
+@immutable
 class WeatherScene {
   final WeatherSceneTypes kind;
   final bool isNight;
 
-  const WeatherScene({required this.kind, required this.isNight});
+  const new({required this.kind, required this.isNight});
 
   /// Backdrop gradient, top to bottom.
   List<Color> get gradient {
@@ -101,6 +102,52 @@ class WeatherScene {
           Color(0xFF3B2C57),
           Color(0xFF1B1430),
         ];
+    }
+  }
+
+  /// Warm key light used by the sun/moon glow and character highlights.
+  Color get glowColor {
+    if (isNight) return ColorPalette.moon;
+    switch (kind) {
+      case WeatherSceneTypes.clear:
+        return ColorPalette.sunGold;
+      case WeatherSceneTypes.clouds:
+        return const Color(0xFFF3E6D2);
+      case WeatherSceneTypes.rain:
+        return const Color(0xFFBFD8E6);
+      case WeatherSceneTypes.thunderstorm:
+        return const Color(0xFFD9CFFF);
+      case WeatherSceneTypes.snow:
+        return const Color(0xFFF2FAFF);
+      case WeatherSceneTypes.fog:
+        return const Color(0xFFE4EBE9);
+      case WeatherSceneTypes.haze:
+        return const Color(0xFFF2C98F);
+      case WeatherSceneTypes.storm:
+        return const Color(0xFFC9B8F0);
+    }
+  }
+
+  /// Deep brush-shadow tone used for the lower half of each scene.
+  Color get shadowColor {
+    if (isNight) return const Color(0xFF05060A);
+    switch (kind) {
+      case WeatherSceneTypes.clear:
+        return ColorPalette.deepTeal;
+      case WeatherSceneTypes.clouds:
+        return const Color(0xFF3F4C5C);
+      case WeatherSceneTypes.rain:
+        return ColorPalette.rainSlate;
+      case WeatherSceneTypes.thunderstorm:
+        return ColorPalette.stormNight;
+      case WeatherSceneTypes.snow:
+        return ColorPalette.iceDeep;
+      case WeatherSceneTypes.fog:
+        return const Color(0xFF5C6C67);
+      case WeatherSceneTypes.haze:
+        return const Color(0xFF8A6350);
+      case WeatherSceneTypes.storm:
+        return const Color(0xFF120D22);
     }
   }
 }
