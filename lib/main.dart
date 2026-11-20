@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:weather/view/main_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,19 +15,13 @@ void main() {
 
   runApp(
     Platform.isIOS
-        ? CupertinoApp(debugShowCheckedModeBanner: false, home: MyApp())
-        : MaterialApp(debugShowCheckedModeBanner: false, home: MyApp()),
+        ? const CupertinoApp(
+            debugShowCheckedModeBanner: false,
+            home: MainScreen(),
+          )
+        : const MaterialApp(
+            debugShowCheckedModeBanner: false,
+            home: MainScreen(),
+          ),
   );
-}
-
-class MyApp extends StatelessWidget {
-  const new({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('My App')),
-      body: const Center(child: Text('Hello, World!')),
-    );
-  }
 }
