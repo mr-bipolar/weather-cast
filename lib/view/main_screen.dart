@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:weather/view/widgets/offline_overlay.dart';
 
 class MainScreen extends StatefulWidget {
@@ -13,8 +15,28 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   // Net connection checker
-  final bool _isConnected = false;
+  bool _isConnected = false;
+  StreamSubscription? _streamSubscription;
+
+  // helpers
   final bool _toAvoidBottomInset = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Internet connection check
+    _streamSubscription = InternetConnection().onStatusChange.listen((event) {
+      switch (event) {
+        case InternetStatus.connected:
+          if (mounted) setState(() => _isConnected = true);
+          break;
+        case InternetStatus.disconnected:
+          if (mounted) setState(() => _isConnected = false);
+          break;
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,5 +49,11 @@ class _MainScreenState extends State<MainScreen> {
             resizeToAvoidBottomInset: _toAvoidBottomInset,
             body: Stack(children: [OfflineOverlay(isOffline: _isConnected)]),
           );
+  }
+
+  @override
+  void dispose() {
+    _streamSubscription?.cancel();
+    super.dispose();
   }
 }
