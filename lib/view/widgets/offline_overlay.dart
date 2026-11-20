@@ -11,7 +11,7 @@ class OfflineOverlay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (isOffline) return Center(child: Text("Connected : $isOffline"));
+    if (isOffline) return const SizedBox.shrink();
     return Positioned.fill(
       child: Semantics(
         liveRegion: true,

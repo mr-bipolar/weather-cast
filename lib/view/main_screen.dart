@@ -3,7 +3,11 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
+import 'package:weather/core/enums/weather_scene_types.dart';
+import 'package:weather/theme/system_overlay.dart';
+import 'package:weather/theme/weather_scene.dart';
 import 'package:weather/view/widgets/offline_overlay.dart';
 
 class MainScreen extends StatefulWidget {
@@ -18,8 +22,14 @@ class _MainScreenState extends State<MainScreen> {
   bool _isConnected = false;
   StreamSubscription? _streamSubscription;
 
-  // helpers
+  // Helpers
   final bool _toAvoidBottomInset = false;
+
+  // Atmosphere
+  final WeatherScene _scene = const WeatherScene(
+    kind: WeatherSceneTypes.clear,
+    isNight: false,
+  );
 
   @override
   void initState() {
@@ -40,7 +50,7 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Platform.isIOS
+    final content = Platform.isIOS
         ? CupertinoPageScaffold(
             resizeToAvoidBottomInset: _toAvoidBottomInset,
             child: Stack(children: [OfflineOverlay(isOffline: _isConnected)]),
@@ -49,6 +59,11 @@ class _MainScreenState extends State<MainScreen> {
             resizeToAvoidBottomInset: _toAvoidBottomInset,
             body: Stack(children: [OfflineOverlay(isOffline: _isConnected)]),
           );
+
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemOverlay.statusBarStyle(_scene),
+      child: content,
+    );
   }
 
   @override
