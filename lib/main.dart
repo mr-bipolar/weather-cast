@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:weather/view/main_screen.dart';
+import 'package:weather/view/splash_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,11 +17,11 @@ void main() {
     Platform.isIOS
         ? const CupertinoApp(
             debugShowCheckedModeBanner: false,
-            home: MainScreen(),
+            home: SplashScreen(),
           )
         : const MaterialApp(
             debugShowCheckedModeBanner: false,
-            home: MainScreen(),
+            home: SplashScreen(),
           ),
   );
 }

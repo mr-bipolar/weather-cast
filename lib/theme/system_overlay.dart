@@ -5,24 +5,38 @@ import 'package:weather/theme/weather_scene.dart';
 class SystemOverlay {
   SystemOverlay._();
 
-  static double _contrastWith(Color first, Color second) {
-    final bocf = first.computeLuminance(); // brightness of color first (bocf)
-    final bocs = second.computeLuminance(); // brightness of color second (bocs)
-    final hb = bocf > bocs ? bocf : bocs; // higher brightness (hb)
-    final lb = bocf < bocs ? bocf : bocs; // lower  brightness (lb)
-    return (hb + 0.05) / (lb + 0.05);
+  static bool _shouldUseLightIcons(Color background) {
+    final luminance = background.computeLuminance();
+
+    final whiteContrast = 1.05 / (luminance + 0.05);
+    final blackContrast = (luminance + 0.05) / 0.05;
+
+    return whiteContrast > blackContrast;
   }
 
-  static SystemUiOverlayStyle statusBarStyle(WeatherScene scene) {
+  static SystemUiOverlayStyle style(WeatherScene scene) {
     final top = scene.gradient.first;
-    final lightContrast = _contrastWith(top, Colors.white);
-    final darkContrast = _contrastWith(top, Colors.black);
-    final lightIcons = lightContrast >= darkContrast;
+    final bottom = scene.gradient.last;
+
+    final lightStatusIcons = _shouldUseLightIcons(top);
+    final lightNavigationIcons = _shouldUseLightIcons(bottom);
 
     return SystemUiOverlayStyle(
+      // Top status bar
       statusBarColor: Colors.transparent,
-      statusBarIconBrightness: lightIcons ? Brightness.light : Brightness.dark,
-      statusBarBrightness: lightIcons ? Brightness.dark : Brightness.light,
+      statusBarIconBrightness: lightStatusIcons
+          ? Brightness.light
+          : Brightness.dark,
+      statusBarBrightness: lightStatusIcons
+          ? Brightness.dark
+          : Brightness.light,
+
+      // Bottom navigation bar
+      systemNavigationBarColor: Colors.transparent,
+      systemNavigationBarIconBrightness: lightNavigationIcons
+          ? Brightness.light
+          : Brightness.dark,
+      systemNavigationBarContrastEnforced: false,
     );
   }
 }
