@@ -7,7 +7,13 @@ import 'package:weather/theme/text_style.dart';
 class StatusStrip extends StatelessWidget {
   final bool isLoading;
   final String? loadError;
-  const new({super.key, required this.isLoading, this.loadError});
+  final VoidCallback onRetry;
+  const new({
+    super.key,
+    required this.isLoading,
+    this.loadError,
+    required this.onRetry,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +74,7 @@ class StatusStrip extends StatelessWidget {
             ),
           ),
           TextButton(
-            onPressed: () {},
+            onPressed: onRetry,
             style: TextButton.styleFrom(
               padding: const .symmetric(horizontal: 8),
               minimumSize: const Size(44, 44),

@@ -22,4 +22,6 @@ class AppStrings {
       'Location permission unavailable — search for a city instead';
   static const unableAccess =
       'Unable to access device location — search for a city instead';
+  static const forcastUnavailable = 'Forecast is currently unavailable';
+  static const unableLoadWeather = 'Unable to load weather for your location';
 }

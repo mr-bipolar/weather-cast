@@ -48,6 +48,8 @@ class MainScreenView extends StatelessWidget {
   // Forecast
   final List<ForecastItem> forecastItems;
   final int? forecastTimezone;
+  final void Function(String)? onChanged;
+  final VoidCallback onRetry;
 
   const new({
     super.key,
@@ -58,6 +60,8 @@ class MainScreenView extends StatelessWidget {
     required this.cityname,
     required this.forecastItems,
     required this.forecastTimezone,
+    required this.onChanged,
+    required this.onRetry,
     this.loadError,
     this.temperature,
     this.conditionDescription,
@@ -94,21 +98,28 @@ class MainScreenView extends StatelessWidget {
 
           return SingleChildScrollView(
             physics: const ClampingScrollPhysics(),
-            padding: EdgeInsets.fromLTRB(pad, 10, pad, 18),
+            padding: .fromLTRB(pad, 10, pad, 18),
             child: Align(
-              alignment: Alignment.topCenter,
+              alignment: .topCenter,
               child: ConstrainedBox(
                 constraints: BoxConstraints(
                   minHeight: constraints.maxHeight - 28,
                   maxWidth: 560,
                 ),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  crossAxisAlignment: .stretch,
                   children: [
-                    Header(isConnected: isConnected, cityname: "Kollam"),
+                    Header(isConnected: isConnected, cityname: cityname),
                     16.h,
-                    SearchView(textEditingController: textEditingController),
-                    StatusStrip(isLoading: isLoading),
+                    SearchView(
+                      textEditingController: textEditingController,
+                      onChanged: onChanged,
+                    ),
+                    StatusStrip(
+                      isLoading: isLoading,
+                      loadError: loadError,
+                      onRetry: onRetry,
+                    ),
                     SizedBox(height: searchGap + breather),
                     Center(
                       child: ExcludeSemantics(
@@ -116,7 +127,14 @@ class MainScreenView extends StatelessWidget {
                       ),
                     ),
                     12.h,
-                    HeroView(),
+                    HeroView(
+                      temperature: temperature,
+                      conditionDescription: conditionDescription,
+                      weather: weather,
+                      maxtemp: maxtemp,
+                      mintemp: mintemp,
+                      feelslike: feelslike,
+                    ),
                     SizedBox(height: heroGap),
                     ForecastRail(
                       items: forecastItems,
@@ -132,7 +150,11 @@ class MainScreenView extends StatelessWidget {
                       windDirection: windDirection,
                     ),
                     14.h,
-                    Footer(),
+                    Footer(
+                      sunrise: sunrise,
+                      sunset: sunset,
+                      lastUpdated: lastUpdated,
+                    ),
                   ],
                 ),
               ),

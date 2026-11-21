@@ -222,4 +222,13 @@ class WeatherScene {
     if (id > 800 && id < 900) return WeatherSceneTypes.clouds;
     return WeatherSceneTypes.clouds;
   }
+
+  static bool nightAt({
+    required int sunrise,
+    required int sunset,
+    DateTime? now,
+  }) {
+    final current = (now ?? DateTime.now()).millisecondsSinceEpoch ~/ 1000;
+    return current < sunrise || current >= sunset;
+  }
 }
