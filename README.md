@@ -185,4 +185,9 @@ Contributions, bug reports, and feature suggestions are welcome.
 
 ## License
 
-This project is open source. See the [LICENSE](LICENSE) file for licensing terms.
+The original source code of Weather Cast is licensed under the MIT License.
+
+**Excluded assets and third-party services:**
+- App icons, logos, and project branding are not covered by the MIT License. All rights reserved.
+- OpenWeatherMap API services and weather data are subject to OpenWeatherMap's own terms and licensing.
+- Third-party dependencies retain their respective licenses.
