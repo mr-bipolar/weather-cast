@@ -18,7 +18,8 @@ import 'package:weather/view/widgets/weather_backdrop.dart';
 import 'package:weather/view/widgets/weather_view/main_screen.dart';
 
 class MainScreen extends StatefulWidget {
-  const new({super.key});
+  final Stream<InternetStatus>? connectionStatusStream;
+  const new({super.key, this.connectionStatusStream});
 
   @override
   State<MainScreen> createState() => _MainScreenState();
@@ -231,29 +232,31 @@ class _MainScreenState extends State<MainScreen> {
     _textEditingController = TextEditingController();
 
     // Network connection listener
-    _streamSubscription = InternetConnection().onStatusChange.listen((event) {
-      if (!mounted) return;
+    _streamSubscription =
+        (widget.connectionStatusStream ?? InternetConnection().onStatusChange)
+            .listen((event) {
+              if (!mounted) return;
 
-      switch (event) {
-        case InternetStatus.connected:
-          final wasConnected = _isConnected;
-          setState(() => _isConnected = true);
-          final lastUpdate = _lastUpdated;
-          final needsRefresh =
-              _loadError != null ||
-              (lastUpdate != null &&
-                  DateTime.now().difference(lastUpdate) >
-                      const Duration(minutes: 30));
-          if (mounted && !wasConnected && needsRefresh) {
-            _getWeatherData(_lastRequestedCity);
-          }
-          break;
+              switch (event) {
+                case InternetStatus.connected:
+                  final wasConnected = _isConnected;
+                  setState(() => _isConnected = true);
+                  final lastUpdate = _lastUpdated;
+                  final needsRefresh =
+                      _loadError != null ||
+                      (lastUpdate != null &&
+                          DateTime.now().difference(lastUpdate) >
+                              const Duration(minutes: 30));
+                  if (mounted && !wasConnected && needsRefresh) {
+                    _getWeatherData(_lastRequestedCity);
+                  }
+                  break;
 
-        case InternetStatus.disconnected:
-          setState(() => _isConnected = false);
-          break;
-      }
-    });
+                case InternetStatus.disconnected:
+                  setState(() => _isConnected = false);
+                  break;
+              }
+            });
   }
 
   @override
