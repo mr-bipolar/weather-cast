@@ -7,7 +7,13 @@ import 'package:weather/shared/extensions/colors_extension.dart';
 
 class SearchView extends StatelessWidget {
   final TextEditingController textEditingController;
-  const new({super.key, required this.textEditingController});
+  final void Function(String)? onChanged;
+
+  const new({
+    super.key,
+    required this.textEditingController,
+    required this.onChanged,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +27,7 @@ class SearchView extends StatelessWidget {
               placeholderStyle: const TextStyle(color: Colors.white70),
               itemSize: 22,
               backgroundColor: Colors.black.fade(0.22),
-              onChanged: (value) {},
+              onChanged: onChanged,
             ),
           )
         : TextField(
@@ -54,7 +60,7 @@ class SearchView extends StatelessWidget {
               hintStyle: const TextStyle(color: Colors.white70, fontSize: 13),
             ),
             // function call
-            onChanged: (value) {},
+            onChanged: onChanged,
           );
   }
 }
