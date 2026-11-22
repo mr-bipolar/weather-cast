@@ -1,7 +1,8 @@
-import 'dart:ui';
+import 'package:flutter/material.dart';
 
+@immutable
 class ColorPalette {
-  ColorPalette._();
+  const ColorPalette._();
 
   static const Color ink = Color(0xFFF7F8FB);
 

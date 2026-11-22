@@ -9,6 +9,7 @@ import 'package:weather/core/enums/weather_scene_types.dart';
 import 'package:weather/theme/system_overlay.dart';
 import 'package:weather/theme/weather_scene.dart';
 import 'package:weather/view/widgets/offline_overlay.dart';
+import 'package:weather/view/widgets/weather_backdrop.dart';
 
 class MainScreen extends StatefulWidget {
   const new({super.key});
@@ -53,11 +54,21 @@ class _MainScreenState extends State<MainScreen> {
     final content = Platform.isIOS
         ? CupertinoPageScaffold(
             resizeToAvoidBottomInset: _toAvoidBottomInset,
-            child: Stack(children: [OfflineOverlay(isOffline: _isConnected)]),
+            child: Stack(
+              children: [
+                WeatherBackdrop(scene: _scene, child: Text('hello')),
+                OfflineOverlay(isOffline: _isConnected),
+              ],
+            ),
           )
         : Scaffold(
             resizeToAvoidBottomInset: _toAvoidBottomInset,
-            body: Stack(children: [OfflineOverlay(isOffline: _isConnected)]),
+            body: Stack(
+              children: [
+                WeatherBackdrop(scene: _scene, child: Text('hello')),
+                OfflineOverlay(isOffline: _isConnected),
+              ],
+            ),
           );
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
