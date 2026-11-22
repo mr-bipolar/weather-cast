@@ -41,7 +41,7 @@ class SplashLightScene extends StatelessWidget {
                   children: [
                     Image.asset(
                       AppStrings.appIconPath,
-                      height: 104,
+                      height: 120,
                       filterQuality: .medium,
                     ),
                     const SizedBox(height: 24),
