@@ -12,4 +12,14 @@ class AppStrings {
   static const loadingStatus = 'Loading weather';
   static const retry = 'Retry';
   static const tempUnavailable = 'Temperature unavailable';
+  static const permissionDenied =
+      'Location permission denied — search for a city instead';
+  static const permanentlyDenied =
+      'Location permission permanently denied — enable it in settings or search for a city instead';
+  static const permissionDisabled =
+      'Location services are disabled — enable location or search for a city instead';
+  static const permissionUnavailable =
+      'Location permission unavailable — search for a city instead';
+  static const unableAccess =
+      'Unable to access device location — search for a city instead';
 }
