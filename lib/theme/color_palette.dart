@@ -5,6 +5,13 @@ class ColorPalette {
   const ColorPalette._();
 
   static const Color ink = Color(0xFFF7F8FB);
+  static const Color muted = Color(0xFFE4E7F0);
+  static const Color faint = Color(0xCCF7F8FB);
+
+  // Character inks
+  static const Color faceInk = Color(0xFF7A5326);
+  static const Color cloudFaceInk = Color(0xFF5B5242);
+  static const Color stormFaceInk = Color(0xFFE9E6FF);
 
   // Night
   static const Color nightTop = Color(0xFF141A33);
@@ -33,4 +40,8 @@ class ColorPalette {
   // Haze
   static const Color hazeAmber = Color(0xFFD9A15B);
   static const Color dustyRose = Color(0xFFC99B8E);
+
+  // Fog
+  static const Color fogSilver = Color(0xFFC9D1D3);
+  static const Color fogSage = Color(0xFFA9B8B0);
 }

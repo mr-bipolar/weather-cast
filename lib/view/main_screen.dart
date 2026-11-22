@@ -6,10 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:weather/core/enums/weather_scene_types.dart';
+import 'package:weather/model/weather_model.dart';
 import 'package:weather/theme/system_overlay.dart';
 import 'package:weather/theme/weather_scene.dart';
 import 'package:weather/view/widgets/offline_overlay.dart';
 import 'package:weather/view/widgets/weather_backdrop.dart';
+import 'package:weather/view/widgets/weather_view/main_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const new({super.key});
@@ -19,12 +21,9 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  // Net connection checker
+  // Network connection
   bool _isConnected = false;
   StreamSubscription? _streamSubscription;
-
-  // Helpers
-  final bool _toAvoidBottomInset = false;
 
   // Atmosphere
   final WeatherScene _scene = const WeatherScene(
@@ -32,18 +31,51 @@ class _MainScreenState extends State<MainScreen> {
     isNight: false,
   );
 
+  // Weather data
+  String? cityname,
+      weather,
+      conditionDescription,
+      temperature,
+      maxtemp,
+      mintemp,
+      feelslike,
+      sunrise,
+      sunset,
+      humidity,
+      visibility,
+      visibilityUnit,
+      presure,
+      windspeed,
+      windDirection;
+
+  // Helpers
+  final bool _toAvoidBottomInset = false;
+  final List<ForecastItem> _forecastItems = const [];
+  int? _forecastTimezone;
+
+  final bool _isLoading = false;
+  String? _loadError;
+  DateTime? _lastUpdated;
+
+  // Search controller
+  late final TextEditingController _textEditingController;
+
   @override
   void initState() {
     super.initState();
 
-    // Internet connection check
+    _textEditingController = TextEditingController();
+
     _streamSubscription = InternetConnection().onStatusChange.listen((event) {
+      if (!mounted) return;
+
       switch (event) {
         case InternetStatus.connected:
-          if (mounted) setState(() => _isConnected = true);
+          setState(() => _isConnected = true);
           break;
+
         case InternetStatus.disconnected:
-          if (mounted) setState(() => _isConnected = false);
+          setState(() => _isConnected = false);
           break;
       }
     });
@@ -51,12 +83,38 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final mainView = MainScreenView(
+      textEditingController: _textEditingController,
+      scene: _scene,
+      isConnected: _isConnected,
+      isLoading: _isLoading,
+      loadError: _loadError,
+      cityname: cityname,
+      temperature: temperature,
+      conditionDescription: conditionDescription,
+      weather: weather,
+      maxtemp: maxtemp,
+      mintemp: mintemp,
+      feelslike: feelslike,
+      sunrise: sunrise,
+      sunset: sunset,
+      lastUpdated: _lastUpdated,
+      pressure: presure,
+      humidity: humidity,
+      visibility: visibility,
+      visibilityUnit: visibilityUnit,
+      windspeed: windspeed,
+      windDirection: windDirection,
+      forecastItems: _forecastItems,
+      forecastTimezone: _forecastTimezone,
+    );
+
     final content = Platform.isIOS
         ? CupertinoPageScaffold(
             resizeToAvoidBottomInset: _toAvoidBottomInset,
             child: Stack(
               children: [
-                WeatherBackdrop(scene: _scene, child: Text('hello')),
+                WeatherBackdrop(scene: _scene, child: mainView),
                 OfflineOverlay(isOffline: _isConnected),
               ],
             ),
@@ -65,7 +123,7 @@ class _MainScreenState extends State<MainScreen> {
             resizeToAvoidBottomInset: _toAvoidBottomInset,
             body: Stack(
               children: [
-                WeatherBackdrop(scene: _scene, child: Text('hello')),
+                WeatherBackdrop(scene: _scene, child: mainView),
                 OfflineOverlay(isOffline: _isConnected),
               ],
             ),
@@ -80,6 +138,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void dispose() {
     _streamSubscription?.cancel();
+    _textEditingController.dispose();
     super.dispose();
   }
 }

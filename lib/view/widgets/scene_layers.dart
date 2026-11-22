@@ -22,8 +22,8 @@ class SceneLayers extends StatelessWidget {
         DecoratedBox(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
+              begin: .topCenter,
+              end: .bottomCenter,
               colors: scene.gradient,
             ),
           ),
@@ -52,8 +52,8 @@ class SceneLayers extends StatelessWidget {
             child: DecoratedBox(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
+                  begin: .topCenter,
+                  end: .bottomCenter,
                   colors: _scrimColors(scene),
                   stops: const [0.0, 0.28, 0.72, 1.0],
                 ),

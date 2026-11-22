@@ -150,4 +150,76 @@ class WeatherScene {
         return const Color(0xFF120D22);
     }
   }
+
+  String get semanticLabel {
+    switch (kind) {
+      case WeatherSceneTypes.clear:
+        return isNight ? 'Clear night scene' : 'Clear sky scene';
+      case WeatherSceneTypes.clouds:
+        return 'Cloudy sky scene';
+      case WeatherSceneTypes.rain:
+        return 'Rainy scene';
+      case WeatherSceneTypes.thunderstorm:
+        return 'Thunderstorm scene';
+      case WeatherSceneTypes.snow:
+        return 'Snowy scene';
+      case WeatherSceneTypes.fog:
+        return 'Foggy scene';
+      case WeatherSceneTypes.haze:
+        return 'Hazy scene';
+      case WeatherSceneTypes.storm:
+        return 'Stormy scene';
+    }
+  }
+
+  static WeatherScene resolve({
+    String? condition,
+    int? conditionId,
+    bool isNight = false,
+  }) {
+    final main = (condition ?? '').toLowerCase().trim();
+
+    switch (main) {
+      case 'clear':
+        return WeatherScene(kind: WeatherSceneTypes.clear, isNight: isNight);
+      case 'clouds':
+        return WeatherScene(kind: WeatherSceneTypes.clouds, isNight: isNight);
+      case 'rain':
+      case 'drizzle':
+        return WeatherScene(kind: WeatherSceneTypes.rain, isNight: isNight);
+      case 'thunderstorm':
+        return WeatherScene(
+          kind: WeatherSceneTypes.thunderstorm,
+          isNight: isNight,
+        );
+      case 'snow':
+        return WeatherScene(kind: WeatherSceneTypes.snow, isNight: isNight);
+      case 'mist':
+      case 'fog':
+        return WeatherScene(kind: WeatherSceneTypes.fog, isNight: isNight);
+      case 'haze':
+      case 'smoke':
+      case 'dust':
+      case 'sand':
+      case 'ash':
+        return WeatherScene(kind: WeatherSceneTypes.haze, isNight: isNight);
+      case 'squall':
+      case 'tornado':
+        return WeatherScene(kind: WeatherSceneTypes.storm, isNight: isNight);
+    }
+
+    return WeatherScene(kind: _kindFromId(conditionId), isNight: isNight);
+  }
+
+  static WeatherSceneTypes _kindFromId(int? id) {
+    if (id == null) return WeatherSceneTypes.clouds;
+    if (id >= 200 && id < 300) return WeatherSceneTypes.thunderstorm;
+    if (id >= 300 && id < 400) return WeatherSceneTypes.rain;
+    if (id >= 500 && id < 600) return WeatherSceneTypes.rain;
+    if (id >= 600 && id < 700) return WeatherSceneTypes.snow;
+    if (id >= 700 && id < 800) return WeatherSceneTypes.fog;
+    if (id == 800) return WeatherSceneTypes.clear;
+    if (id > 800 && id < 900) return WeatherSceneTypes.clouds;
+    return WeatherSceneTypes.clouds;
+  }
 }
