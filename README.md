@@ -22,21 +22,40 @@ A Flutter weather application powered by the OpenWeatherMap API. Get current wea
 
 ### Screenshots
 
-| Splash Screen | Clear Sky |
-|---|---|
-| ![Splash Screen](screen-preview/splash-screen.png) | ![Clear Sky](screen-preview/clear-sky.png) |
-
-| Clear Sky at Night | Clouds |
-|---|---|
-| ![Clear Sky Night](screen-preview/clear-sky-night.png) | ![Clouds](screen-preview/clouds.png) |
-
-| Rain | Haze |
-|---|---|
-| ![Rain](screen-preview/rain.png) | ![Haze](screen-preview/haze.png) |
-
-| Mist |
-|---|
-| ![Mist](screen-preview/mist.png) |
+<table>
+  <tr>
+    <td align="center">Splash Screen</td>
+    <td align="center">Clear Sky</td>
+  </tr>
+  <tr>
+    <td><img src="screen-preview/splash-screen.png" width="250"></td>
+    <td><img src="screen-preview/clear-sky.png" width="250"></td>
+  </tr>
+  <tr>
+    <td align="center">Clear Sky at Night</td>
+    <td align="center">Clouds</td>
+  </tr>
+  <tr>
+    <td><img src="screen-preview/clear-sky-night.png" width="250"></td>
+    <td><img src="screen-preview/clouds.png" width="250"></td>
+  </tr>
+  <tr>
+    <td align="center">Rain</td>
+    <td align="center">Haze</td>
+  </tr>
+  <tr>
+    <td><img src="screen-preview/rain.png" width="250"></td>
+    <td><img src="screen-preview/haze.png" width="250"></td>
+  </tr>
+  <tr>
+    <td align="center">Mist</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><img src="screen-preview/mist.png" width="250"></td>
+    <td></td>
+  </tr>
+</table>
 
 ## Tech Stack
 
