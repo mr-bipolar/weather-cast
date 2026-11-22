@@ -307,7 +307,7 @@ class _MainScreenState extends State<MainScreen> {
           );
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemOverlay.statusBarStyle(_scene),
+      value: SystemOverlay.style(_scene),
       child: content,
     );
   }

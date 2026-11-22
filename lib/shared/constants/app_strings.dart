@@ -1,6 +1,7 @@
 class AppStrings {
   AppStrings._();
-
+  static const appName = 'Weather Cast';
+  static const appIconPath = 'assets/icons/Clear.png';
   static const internetError = 'Check your network connection..!';
   static const scenePreview = 'Open weather scene preview (debug only)';
   static const scenes = 'Scenes';
