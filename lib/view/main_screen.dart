@@ -18,7 +18,8 @@ import 'package:weather/view/widgets/weather_backdrop.dart';
 import 'package:weather/view/widgets/weather_view/main_screen.dart';
 
 class MainScreen extends StatefulWidget {
-  const new({super.key});
+  final Stream<InternetStatus>? connectionStatusStream;
+  const new({super.key, this.connectionStatusStream});
 
   @override
   State<MainScreen> createState() => _MainScreenState();
@@ -66,13 +67,13 @@ class _MainScreenState extends State<MainScreen> {
   // Search controller
   late final TextEditingController _textEditingController;
 
+  // service call
+  final WeatherServices _weatherServices = WeatherServices();
+
   // Api call function
   Future<void> _getWeatherData(String city) async {
     final seq = ++_requestSeq;
     _lastRequestedCity = city;
-
-    // service call
-    WeatherServices weatherServices = WeatherServices();
 
     if (mounted) {
       setState(() {
@@ -85,9 +86,9 @@ class _MainScreenState extends State<MainScreen> {
       final WeatherData? weatherModel;
 
       if (city.isEmpty) {
-        weatherModel = await weatherServices.weather();
+        weatherModel = await _weatherServices.weather();
       } else {
-        weatherModel = await weatherServices.getWeather(city);
+        weatherModel = await _weatherServices.getWeather(city);
       }
 
       var currentUpdated = false;
@@ -139,8 +140,8 @@ class _MainScreenState extends State<MainScreen> {
 
       // Forecast  (city or device location)
       final ForecastData? forecastData = city.isEmpty
-          ? await weatherServices.forecast()
-          : await weatherServices.getForecast(city);
+          ? await _weatherServices.forecast()
+          : await _weatherServices.getForecast(city);
 
       if (!mounted || seq != _requestSeq) return;
       setState(() {
@@ -231,29 +232,31 @@ class _MainScreenState extends State<MainScreen> {
     _textEditingController = TextEditingController();
 
     // Network connection listener
-    _streamSubscription = InternetConnection().onStatusChange.listen((event) {
-      if (!mounted) return;
+    _streamSubscription =
+        (widget.connectionStatusStream ?? InternetConnection().onStatusChange)
+            .listen((event) {
+              if (!mounted) return;
 
-      switch (event) {
-        case InternetStatus.connected:
-          final wasConnected = _isConnected;
-          setState(() => _isConnected = true);
-          final lastUpdate = _lastUpdated;
-          final needsRefresh =
-              _loadError != null ||
-              (lastUpdate != null &&
-                  DateTime.now().difference(lastUpdate) >
-                      const Duration(minutes: 30));
-          if (mounted && !wasConnected && needsRefresh) {
-            _getWeatherData(_lastRequestedCity);
-          }
-          break;
+              switch (event) {
+                case InternetStatus.connected:
+                  final wasConnected = _isConnected;
+                  setState(() => _isConnected = true);
+                  final lastUpdate = _lastUpdated;
+                  final needsRefresh =
+                      _loadError != null ||
+                      (lastUpdate != null &&
+                          DateTime.now().difference(lastUpdate) >
+                              const Duration(minutes: 30));
+                  if (mounted && !wasConnected && needsRefresh) {
+                    _getWeatherData(_lastRequestedCity);
+                  }
+                  break;
 
-        case InternetStatus.disconnected:
-          setState(() => _isConnected = false);
-          break;
-      }
-    });
+                case InternetStatus.disconnected:
+                  setState(() => _isConnected = false);
+                  break;
+              }
+            });
   }
 
   @override
@@ -316,6 +319,7 @@ class _MainScreenState extends State<MainScreen> {
   void dispose() {
     _streamSubscription?.cancel();
     _textEditingController.dispose();
+    _weatherServices.dispose();
     super.dispose();
   }
 }
