@@ -26,24 +26,24 @@ A Flutter weather application powered by the OpenWeatherMap API. Get current wea
   <tr>
     <td align="center">Splash Screen</td>
     <td align="center">Clear Sky</td>
+     <td align="center">Clear Sky at Night</td>
   </tr>
   <tr>
     <td><img src="screen-preview/splash-screen.png" width="250"></td>
     <td><img src="screen-preview/clear-sky.png" width="250"></td>
+   <td><img src="screen-preview/clear-sky-night.png" width="250"></td>
   </tr>
   <tr>
     <td align="center">Clear Sky at Night</td>
     <td align="center">Clouds</td>
   </tr>
   <tr>
-    <td><img src="screen-preview/clear-sky-night.png" width="250"></td>
-    <td><img src="screen-preview/clouds.png" width="250"></td>
-  </tr>
-  <tr>
+     <td align="center">Clouds</td>
     <td align="center">Rain</td>
     <td align="center">Haze</td>
   </tr>
   <tr>
+       <td><img src="screen-preview/clouds.png" width="250"></td>
     <td><img src="screen-preview/rain.png" width="250"></td>
     <td><img src="screen-preview/haze.png" width="250"></td>
   </tr>
